@@ -6,14 +6,12 @@ namespace Web_Scraping_App
 {
     class GetSummaryData
     {
-        public static void FirstTrial()
+        public static void GetData()
         {
-            var login= new LogIn("nimiko_chan", "DRZ!2#k");
-            login.LogUserIn();
+
             var summaryTable = GetTable();
 
-            var wait = new WebDriverWait(Drivers.Driver, TimeSpan.FromSeconds(10));
-            var row = summaryTable.FindElement(By.XPath(".//tr[1]"));
+            var driver = Drivers.Driver;
 
             var numberOfRows = summaryTable.FindElements(By.XPath(".//tr")).Count;
 
@@ -24,27 +22,35 @@ namespace Web_Scraping_App
             //Scraping all the table data 
             for (var i = 1; i <= numberOfRows; i++)
             {
+                
                 var rowXPath = $"//tr[{i}]";
-                var symbolName = wait.Until(d => row.FindElement(By.XPath(rowXPath + "/td[1]/span/a")).Text);
-                var lastPrice = summaryTable.FindElement(By.XPath(rowXPath + "/td[2]/span")).Text;
-                var changePrct = row.FindElement(By.XPath(rowXPath + "/td[4]/span")).Text;
-                var volume = row.FindElement(By.XPath(rowXPath + "/td[7]/span")).Text;
-                var avgVolume = row.FindElement(By.XPath(rowXPath + "/td[9]")).Text;
+                var symbolName = Drivers.Wait.Until(d => driver.FindElement(By.XPath(rowXPath + "/td[1]/span/a")).Text);
+                var lastPrice = driver.FindElement(By.XPath(rowXPath + "/td[2]/span")).Text;
+                var changePrct = driver.FindElement(By.XPath(rowXPath + "/td[4]/span")).Text;
+                var volume = driver.FindElement(By.XPath(rowXPath + "/td[7]/span")).Text;
+                var avgVolume = driver.FindElement(By.XPath(rowXPath + "/td[9]")).Text;
 
                 Console.WriteLine($"{symbolName}\t{lastPrice}\t" +
                                   $"{changePrct}\t {volume}\t" +
                                   $"\t{avgVolume}");
             }
 
-            Drivers.Driver.Close();
+            driver.Close();
+        }
+
+        private static void GetTableData()
+        {
+            
         }
 
         private static IWebElement GetTable()
         {
+            var login = new LogIn("nimiko_chan", "DRZ!2#k");
+            login.LogUserIn();
+
             Drivers.Driver.Navigate()
                 .GoToUrl("https://finance.yahoo.com/portfolio/p_0/view/v1");
 
-            Drivers.Wait= new WebDriverWait(Drivers.Driver, TimeSpan.FromSeconds(10));
             var table = Drivers.Wait.Until(d => d.FindElement(By.XPath("//table[@data-test='contentTable']/tbody")));
             return table;
         }

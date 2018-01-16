@@ -10,7 +10,7 @@ namespace Web_Scraping_App
     {
         static void Main(string[] args)
         {
-            GetSummaryData.FirstTrial();
+            GetSummaryData.GetData();
         }
     }
 }
