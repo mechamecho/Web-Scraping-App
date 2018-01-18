@@ -2,7 +2,7 @@
 
 namespace Web_Scraping_App
 {
-    public class SummaryContext : DbContext
+    public class SummaryContext : System.Data.Entity.DbContext
     {
         public SummaryContext()
             :base()
@@ -10,5 +10,7 @@ namespace Web_Scraping_App
             
         }
         public DbSet<Summary> Summaries { get; set; }
+        public DbSet<TableSummary> TableSummaries { get; set; }
+
     }
 }

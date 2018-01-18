@@ -27,6 +27,7 @@ namespace Web_Scraping_App
         {
             using (var db = new SummaryContext())
             {
+                var tableSummary= new TableSummary(){ScrapeTime = scrapeTime};
                 //Scraping all the table data 
                 for (var i = 1; i <= numberOfRows; i++)
                 {
@@ -37,12 +38,8 @@ namespace Web_Scraping_App
                     var volume = Driver.FindElement(By.XPath(rowXPath + "/td[7]/span")).Text;
                     var avgVolume = Driver.FindElement(By.XPath(rowXPath + "/td[9]")).Text;
 
-                    Console.WriteLine($"{symbolName}\t{lastPrice}\t" +
-                                      $"{changePrct}\t {volume}\t" +
-                                      $"\t{avgVolume}");
                     var summary = new Summary()
                     {
-                        SummaryScrapeTime = scrapeTime,
                         SymbolName = symbolName,
                         LastPrice = lastPrice,
                         ChangePercentage = changePrct,
@@ -51,11 +48,13 @@ namespace Web_Scraping_App
                     };
 
                     db.Summaries.Add(summary);
+                    db.TableSummaries.Add(tableSummary);
                     db.SaveChanges();
                 }
             }
 
         }
+
 
         private static IWebElement GetTable()
         {

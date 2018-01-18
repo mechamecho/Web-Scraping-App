@@ -5,14 +5,15 @@ namespace Web_Scraping_App.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Web_Scraping_App.StockSummaryContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Web_Scraping_App.SummaryContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            ContextKey = "Web_Scraping_App.SummaryContext";
         }
 
-        protected override void Seed(Web_Scraping_App.StockSummaryContext context)
+        protected override void Seed(Web_Scraping_App.SummaryContext context)
         {
             //  This method will be called after migrating to the latest version.
 
