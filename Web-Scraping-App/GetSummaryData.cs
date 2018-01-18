@@ -1,46 +1,45 @@
 ﻿using System;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
 
 namespace Web_Scraping_App
 {
+
     class GetSummaryData
     {
+        private static readonly IWebDriver Driver = Drivers.Driver;
+
         public static void GetData()
         {
-
             var summaryTable = GetTable();
-
-            var driver = Drivers.Driver;
-
-            var numberOfRows = summaryTable.FindElements(By.XPath(".//tr")).Count;
 
             //Time of Scraping
             var scrapeTime = DateTime.Now;
             Console.WriteLine(scrapeTime);
 
+            //GetTableData
+            var numberOfRows = summaryTable.FindElements(By.XPath(".//tr")).Count;
+            GetTableData(numberOfRows);
+
+            Driver.Close();
+        }
+
+        private static void GetTableData(int numberOfRows)
+        {
+
             //Scraping all the table data 
             for (var i = 1; i <= numberOfRows; i++)
             {
-                
                 var rowXPath = $"//tr[{i}]";
-                var symbolName = Drivers.Wait.Until(d => driver.FindElement(By.XPath(rowXPath + "/td[1]/span/a")).Text);
-                var lastPrice = driver.FindElement(By.XPath(rowXPath + "/td[2]/span")).Text;
-                var changePrct = driver.FindElement(By.XPath(rowXPath + "/td[4]/span")).Text;
-                var volume = driver.FindElement(By.XPath(rowXPath + "/td[7]/span")).Text;
-                var avgVolume = driver.FindElement(By.XPath(rowXPath + "/td[9]")).Text;
+                var symbolName = Drivers.Wait.Until(d => Driver.FindElement(By.XPath(rowXPath + "/td[1]/span/a")).Text);
+                var lastPrice = Driver.FindElement(By.XPath(rowXPath + "/td[2]/span")).Text;
+                var changePrct = Driver.FindElement(By.XPath(rowXPath + "/td[4]/span")).Text;
+                var volume = Driver.FindElement(By.XPath(rowXPath + "/td[7]/span")).Text;
+                var avgVolume = Driver.FindElement(By.XPath(rowXPath + "/td[9]")).Text;
 
                 Console.WriteLine($"{symbolName}\t{lastPrice}\t" +
                                   $"{changePrct}\t {volume}\t" +
                                   $"\t{avgVolume}");
             }
-
-            driver.Close();
-        }
-
-        private static void GetTableData()
-        {
-            
         }
 
         private static IWebElement GetTable()

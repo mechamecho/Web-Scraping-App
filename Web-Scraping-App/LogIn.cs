@@ -29,10 +29,8 @@ namespace Web_Scraping_App
             userNameField.SendKeys(_username);
             nextButton.Click();
 
-            WebDriverWait wait = new WebDriverWait(Drivers.Driver, TimeSpan.FromSeconds(10));
-
             #region Locate Password field and Sign In Button
-            var passwordField = wait.Until(d => d.FindElement(By.Id("login-passwd")));
+            var passwordField = Drivers.Wait.Until(d => d.FindElement(By.Id("login-passwd")));
             var signInButton = Drivers.Driver.FindElement(By.Id("login-signin"));
             #endregion
 
